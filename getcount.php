@@ -14,7 +14,8 @@ switch($action){
 	$e=104.74223327636719;
 	$s=10.449382871076676;
 	$w=93.20658874511719;
-	$resultset = ROOT::query("select count(id) as c from log where ( latitude <= ".$n." and latitude >= ".$s." and longitude >= ".$w." and longitude <= ".$e." ) " );
+	$sql = "select count(id) as c from log where ( gpslat <= ".$n." and gpslat >= ".$s." and gpslong >= ".$w." and gpslong <= ".$e." ) ";
+	$resultset = ROOT::query($sql );
 	$row = $resultset->fetch_object();
 	$arr['count'] = $row['c'];
 	break;
