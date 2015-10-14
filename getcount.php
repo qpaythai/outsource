@@ -11,9 +11,9 @@ switch($action){
 	break;
 	case 'mapviewcount':
 	extract($_GET);
-	$n=17.092942157798294;
+	$n=10.449382871076676;
 	$e=104.74223327636719;
-	$s=10.449382871076676;
+	$s=17.092942157798294;
 	$w=93.20658874511719;
 //echo 	$sql = "select count(id) as c from log where ( gpslat <= ".$n." and gpslat >= ".$s." and gpslong >= ".$w." and gpslong <= ".$e." ) ";
 	$logtransaction = new log();
