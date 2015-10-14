@@ -31,11 +31,7 @@ switch($action){
 	$logtransaction = new log();
 	$logtransaction->gpslat = "!# between $n and $s #!";
 	$logtransaction->gpslong = "!# between $w and $e #!";
-<<<<<<< HEAD
 	$logtransaction->id = "!# NOT IN ($ids) #!";
-=======
-	$logtransaction->id = "!# NOT IN ($ids) !#";
->>>>>>> origin/master
 	$logtransaction->loadmany();
 	
 	$logtransaction->track();
