@@ -10,19 +10,22 @@ switch($action){
 	$arr['count'] = $row[0];
 	break;
 	case 'mapviewcount':
-	extract($_GET);
-	$n=10.449382871076676;
-	$e=104.74223327636719;
-	$s=17.092942157798294;
-	$w=93.20658874511719;
+	extract($_POST);
+	$n=isset($_POST['n']) && $_POST['n']!=''? $_POST['n'] : 10.449382871076676;
+	$e=isset($_POST['e']) && $_POST['e']!=''? $_POST['e'] : 104.74223327636719;
+	$s=isset($_POST['s']) && $_POST['s']!=''? $_POST['s'] : 17.092942157798294;
+	$w=isset($_POST['w']) && $_POST['w']!=''? $_POST['w'] : 93.20658874511719;
 //echo 	$sql = "select count(id) as c from log where ( gpslat <= ".$n." and gpslat >= ".$s." and gpslong >= ".$w." and gpslong <= ".$e." ) ";
+	$ids = isset($_POST['ids']) &&  $_POST['ids']!='' ? $_POST['ids'] = 0;
+	
 	$logtransaction = new log();
 	$logtransaction->gpslat = "!# between $n and $s #!";
 	$logtransaction->gpslong = "!# between $w and $e #!";
+	$logtransaction->id = " NOT IN ($ids) "
 	$logtransaction->loadmany();
 	
 	//$logtransaction->track();
-	
+	$jsongps->id = $logtransaction->id;
 	$jsongps->lat = $logtransaction->gpslat;
 	$jsongps->long  = $logtransaction->gpslong;
 	echo json_encode($jsongps);
