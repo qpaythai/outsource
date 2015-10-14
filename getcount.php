@@ -18,13 +18,27 @@ switch($action){
 //echo 	$sql = "select count(id) as c from log where ( gpslat <= ".$n." and gpslat >= ".$s." and gpslong >= ".$w." and gpslong <= ".$e." ) ";
 	$ids = isset($_POST['ids']) &&  $_POST['ids']!='' ? $_POST['ids'] : 0;
 	
+	if($n>$s){
+		$t=$s;
+		$n=$s;
+		$s=$t;
+	}
+	if($e>$w){
+		$t=$e;
+		$w=$e;
+		$e=$t;
+	}
 	$logtransaction = new log();
 	$logtransaction->gpslat = "!# between $n and $s #!";
 	$logtransaction->gpslong = "!# between $w and $e #!";
+<<<<<<< HEAD
 	$logtransaction->id = "!# NOT IN ($ids) #!";
+=======
+	$logtransaction->id = "!# NOT IN ($ids) !#";
+>>>>>>> origin/master
 	$logtransaction->loadmany();
 	
-	//$logtransaction->track();
+	$logtransaction->track();
 	$jsongps->id = $logtransaction->id;
 	$jsongps->lat = $logtransaction->gpslat;
 	$jsongps->long  = $logtransaction->gpslong;
