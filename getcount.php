@@ -34,17 +34,12 @@ switch($action){
 	$logtransaction->id = "!# NOT IN ($ids) #!";
 	$logtransaction->loadmany();
 	
-	$logtransaction->track();
-	$jsongps->id = $logtransaction->id;
-	$jsongps->lat = $logtransaction->gpslat;
-	$jsongps->long  = $logtransaction->gpslong;
-	echo json_encode($jsongps);
+	$arr->id = $logtransaction->id;
+	$arr->lat = $logtransaction->gpslat;
+	$arr->long  = $logtransaction->gpslong;	
 	break;
 }
 
 echo json_encode($arr);
 
-echo "SQL  = "; echo $logtransaction->sql;
 
-
-?>
