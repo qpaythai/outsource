@@ -21,11 +21,15 @@ switch($action){
 	$logtransaction->gpslong = "!# between $w and $e #!";
 	$logtransaction->loadmany();
 	
-	$logtransaction->track();
+	//$logtransaction->track();
 	
+	$jsongps->lat = $logtransaction->gpslat;
+	$jsongps->long  = $logtransaction->gpslong;
+	echo json_encode($jsongps);
 	break;
 }
 
 echo json_encode($arr);
+
 
 ?>
