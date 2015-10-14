@@ -23,7 +23,7 @@ switch($action){
 		$n=$s;
 		$s=$t;
 	}
-	if($e>$w){
+	if($w>$e){
 		$t=$e;
 		$w=$e;
 		$e=$t;
