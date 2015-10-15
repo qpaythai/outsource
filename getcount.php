@@ -46,7 +46,7 @@ switch($action){
 	}
 	if(is_numeric($_POST['page'])) $page = $_POST['page'];
 	else $page = 1;
-	if(is_numberic($_POST['limit'])) $limit =$_POST['limit'];
+	if(is_numeric($_POST['limit'])) $limit =$_POST['limit'];
 	else $limit = 100;
 	$logtransaction = new log();
 	$logtransaction->gpslat = "!# between $n and $s #!";
