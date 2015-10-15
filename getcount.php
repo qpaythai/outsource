@@ -10,6 +10,10 @@ extract($_REQUEST);
 	$w=isset($_REQUEST['w']) && $_REQUEST['w']!=''? $_REQUEST['w'] : 93.20658874511719;
 	$ids = isset($_REQUEST['ids']) &&  $_REQUEST['ids']!='' ? $_REQUEST['ids'] : 0;
 	
+	
+switch($action){
+	case 'getcount':
+	
 	if($n>$s){
 		$t=$s;
 		$n=$s;
@@ -20,23 +24,34 @@ extract($_REQUEST);
 		$w=$e;
 		$e=$t;
 	}
-	
 	$logtransaction = new log();
 	$logtransaction->gpslat = "!# between $n and $s #!";
 	$logtransaction->gpslong = "!# between $w and $e #!";
-
-switch($action){
-	case 'getcount':
-	
+	$logtransaction->id = "!# NOT IN ($ids) #!";
 	$logtransaction->loadmany();
 	
 	$arr->totlaRecords = $logtransaction->totalrecords;
 	break;
 	case 'mapviewcount':
 	
-	
-	$logtransaction->id = "!# NOT IN ($ids) #!";
-	$logtransaction->loadmany(' order by id ASC',100);
+	if($n>$s){
+		$t=$s;
+		$n=$s;
+		$s=$t;
+	}
+	if($w>$e){
+		$t=$e;
+		$w=$e;
+		$e=$t;
+	}
+	if(is_numeric($_POST['page'])) $page = $_POST['page'];
+	else $page = 1;
+	if(is_numberic($_POST['limit'])) $limit =$_POST['limit'];
+	else $limit = 100;
+	$logtransaction = new log();
+	$logtransaction->gpslat = "!# between $n and $s #!";
+	$logtransaction->gpslong = "!# between $w and $e #!";
+	$logtransaction->loadmany(' order by id desc',$limit,$page);
 	
 	$arr->id = $logtransaction->id;
 	$arr->lat = $logtransaction->gpslat;
