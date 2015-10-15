@@ -47,7 +47,7 @@ switch($action){
 	$logtransaction = new log();
 	$logtransaction->gpslat = "!# between $n and $s #!";
 	$logtransaction->gpslong = "!# between $w and $e #!";
-	$logtransaction->loadmany(' order by id desc',500);
+	$logtransaction->loadmany(' order by id desc',100);
 	
 	$arr->id = $logtransaction->id;
 	$arr->lat = $logtransaction->gpslat;
