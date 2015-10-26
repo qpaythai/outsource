@@ -6,6 +6,8 @@ var dataIsReady=null;
 var markers=[];
 var isLoaded=false;
 var markerClusterer = null;
+var count =0;
+var perPage=1000;
 	  
 var styles = [[{
         url: '../images/people35.png',
@@ -55,27 +57,40 @@ getData = function(){
 		return;
 	}
 	isLoaded=true;
-	var geoParam;
-	geoParam = 'n=' + map.getBounds().getNorthEast().lat();
-        geoParam += '&e=' + map.getBounds().getNorthEast().lng();
-        geoParam += '&s=' + map.getBounds().getSouthWest().lat();
-        geoParam += '&w=' + map.getBounds().getSouthWest().lng();
+	
+		console.log('calling ajax');
 		$.ajax({
-			  dataType: "json",
 			  url: "ajax-request.php?action=getcount",
 			  method:'POST',
 			  data:geoParam,
+			  timeout:2000,
 			  success: function(d){
-				  console.log('cc',d);
-				 //  showOnMap(data);
+				console.log('cc',d);
+				count = jQuery.parseJSON($.trim(d));
+				  getMarker();
+			  },
+			  error:function(xhr, textStatus, errorThrown){
+				  console.log('failed',xhr, textStatus, errorThrown);
 			  }
 			});
 		
 		return false;
+		
+	}
+	getMarker = function(){
+		var geoParam;
+	geoParam = 'n=' + map.getBounds().getNorthEast().lat();
+        geoParam += '&e=' + map.getBounds().getNorthEast().lng();
+        geoParam += '&s=' + map.getBounds().getSouthWest().lat();
+        geoParam += '&w=' + map.getBounds().getSouthWest().lng();
+		// loop count = Math.ciet(count/perPage);
 		for(var i=0;i<9;i++){
+			var postData = geoParam+'&page=';
 			$.ajax({
-			  dataType: "json",
-			  url: "data/data"+i+".json",
+			  url: "ajax-request.php?action=getcount",
+			  method:'POST',
+			  data:geoParam,
+			  timeout:2000,
 			  success: function(data){
 				   showOnMap(data);
 			  }
