@@ -64,7 +64,7 @@ getData = function(){
 			  dataType: "json",
 			  url: "ajax-request.php?action=getcount",
 			  method:'POST',
-			  data:'',//geoParam,
+			  data:geoParam,
 			  success: function(d){
 				  console.log('cc',d);
 				 //  showOnMap(data);
