@@ -9,12 +9,12 @@ extract($_REQUEST);
 	$ids = isset($_REQUEST['ids']) &&  $_REQUEST['ids']!='' ? $_REQUEST['ids'] : 0;
 	
 	if($n>$s){
-		$t=$s;
+		$t=$n;
 		$n=$s;
 		$s=$t;
 	}
 	if($w>$e){
-		$t=$e;
+		$t=$w;
 		$w=$e;
 		$e=$t;
 	}

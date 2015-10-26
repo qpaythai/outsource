@@ -60,8 +60,18 @@ getData = function(){
         geoParam += '&e=' + map.getBounds().getNorthEast().lng();
         geoParam += '&s=' + map.getBounds().getSouthWest().lat();
         geoParam += '&w=' + map.getBounds().getSouthWest().lng();
-		console.log(geoParam);
+		$.ajax({
+			  dataType: "json",
+			  url: "ajax-request.php?action=getcount",
+			  method:'POST',
+			  data:'',//geoParam,
+			  success: function(d){
+				  console.log('cc',d);
+				 //  showOnMap(data);
+			  }
+			});
 		
+		return false;
 		for(var i=0;i<9;i++){
 			$.ajax({
 			  dataType: "json",
@@ -114,5 +124,5 @@ getData = function(){
           styles: styles[-1]
         });
 		mrk=[];
-//		console.log('total visible marker',markerClusterer,c);
+		console.log('total visible marker',markerClusterer,c);
 	}
