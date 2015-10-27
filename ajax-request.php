@@ -1,9 +1,7 @@
 <?php
 if($_SERVER['HTTP_HOST']=='localhost'){
 $url = 'http://qpay.co.th/outsource/getcount.php?action='.$_GET['action'];
-
 $fields =$_POST;
-
 
 //url-ify the data for the POST
 foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }

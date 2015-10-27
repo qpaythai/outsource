@@ -1,4 +1,3 @@
-// JavaScript Document
 var map;
 var mapData=new Array();
 var mapIsBeingLoaded=null;
@@ -8,7 +7,7 @@ var isLoaded=false;
 var markerClusterer = null;
 var count =0;
 var perPage=1000;
-	  
+var ids = new Array();	  
 var styles = [[{
         url: '../images/people35.png',
         height: 35,
@@ -59,13 +58,18 @@ getData = function(){
 	isLoaded=true;
 	
 		console.log('calling ajax');
+var geoParam;
+		geoParam = 'n=' + map.getBounds().getNorthEast().lat();
+        geoParam += '&e=' + map.getBounds().getNorthEast().lng();
+        geoParam += '&s=' + map.getBounds().getSouthWest().lat();
+        geoParam += '&w=' + map.getBounds().getSouthWest().lng();
 		$.ajax({
 			  url: "ajax-request.php?action=getcount",
 			  method:'POST',
 			  data:geoParam,
 			  timeout:2000,
 			  success: function(d){
-				console.log('cc',d);
+				
 				count = jQuery.parseJSON($.trim(d));
 				  getMarker();
 			  },
@@ -77,46 +81,60 @@ getData = function(){
 		return false;
 		
 	}
-	getMarker = function(){
+	var getMarker = function(){
+
+		
+	var maxP = Math.ceil(count.totlaRecords/perPage);
+		for(var i=1;i<=maxP;i++){
+			setTimeout(getMrk(i,perPage),200);
+		
+		} 
+		
+	}
+function getMrk(page,pp){
 		var geoParam;
-	geoParam = 'n=' + map.getBounds().getNorthEast().lat();
+		geoParam = 'n=' + map.getBounds().getNorthEast().lat();
         geoParam += '&e=' + map.getBounds().getNorthEast().lng();
         geoParam += '&s=' + map.getBounds().getSouthWest().lat();
         geoParam += '&w=' + map.getBounds().getSouthWest().lng();
-		// loop count = Math.ciet(count/perPage);
-		for(var i=0;i<9;i++){
-			var postData = geoParam+'&page=';
+
+			var postData = geoParam+'&page='+page;
 			$.ajax({
-			  url: "ajax-request.php?action=getcount",
+			  url: "ajax-request.php?action=mapviewcount",
 			  method:'POST',
-			  data:geoParam,
+			  data:postData,
 			  timeout:2000,
 			  success: function(data){
 				   showOnMap(data);
 			  }
 			});
-		}
-	}
+		
+}
 	showOnMap=  function(data){
-		for(var i in data){
-			
-			//console.log(p);
-			var pos = {lat:parseFloat(data[i].gpslat),lng:parseFloat(data[i].gpslong)}
-			//console.log('pos',pos);
-				var marker = new google.maps.Marker({
-				position: pos,			
-				map: map,
-				visible:false,
-				icon:markerImage
-				
-			  });
-				markers.push(marker);
+			var data1 = jQuery.parseJSON($.trim(data));
+			//var loopcount = Math.ceil(count/perPage);
+            // console.log(data1);
+            if(data1.id == null){
+				return false;
+			}
 
-
-		}
-		if(dataIsReady)
-			clearTimeout(dataIsReady);
-		dataIsReady = setTimeout(setMarker,600);
+			for(var i=0; i < data1.id.length; i++){ 
+			//console.log('length is',data1.id.length);
+			//loopcount++;
+			var pos = {lat:parseFloat(data1.lat[i]),lng:parseFloat(data1.long[i])}
+						//console.log('pos',pos);
+							var marker = new google.maps.Marker({
+							position: pos,			
+							map: map,
+							visible:false,
+							icon:markerImage
+							
+						  });
+							markers.push(marker);
+					} 
+					if(dataIsReady)
+						clearTimeout(dataIsReady);
+					dataIsReady = setTimeout(setMarker,600);
 	}
 	function setMarker(){
 		console.log(map.getBounds(),'setM');
@@ -132,12 +150,12 @@ getData = function(){
 			}
 		}
 		if(markerClusterer)
-			markerClusterer.clearMarkes();
+			markerClusterer.clearMarkers();
         markerClusterer = new MarkerClusterer(map, mrk, {
           maxZoom: 16,
           gridSize: 50,
           styles: styles[-1]
         });
 		mrk=[];
-		console.log('total visible marker',markerClusterer,c);
+	console.log('total visible marker',markerClusterer,c);
 	}
