@@ -31,7 +31,7 @@ var styles = [[{
         textSize: 12
       }]];
  var imageUrl = 'https://storage.googleapis.com/support-kms-prod/SNP_2752125_en_v0';
-console.log(imageUrl);
+
 var markerImage;
       
 initMap = function(){
@@ -67,8 +67,7 @@ var geoParam;
 			  url: "ajax-request.php?action=getcount",
 			  method:'POST',
 			  data:geoParam,
-			  timeout:2000,
-			  success: function(d){
+			   success: function(d){
 				
 				count = jQuery.parseJSON($.trim(d));
 				  getMarker();
@@ -86,7 +85,7 @@ var geoParam;
 		
 	var maxP = Math.ceil(count.totlaRecords/perPage);
 		for(var i=1;i<=maxP;i++){
-			setTimeout(getMrk(i,perPage),200);
+			setTimeout(getMrk(i,perPage),400);
 		
 		} 
 		
@@ -103,7 +102,6 @@ function getMrk(page,pp){
 			  url: "ajax-request.php?action=mapviewcount",
 			  method:'POST',
 			  data:postData,
-			  timeout:2000,
 			  success: function(data){
 				   showOnMap(data);
 			  }
@@ -152,8 +150,9 @@ function getMrk(page,pp){
 		if(markerClusterer)
 			markerClusterer.clearMarkers();
         markerClusterer = new MarkerClusterer(map, mrk, {
-          maxZoom: 16,
-          gridSize: 50,
+          maxZoom: 19,
+          gridSize: 40,
+		  minimumClusterSize:3,
           styles: styles[-1]
         });
 		mrk=[];
